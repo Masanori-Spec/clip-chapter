@@ -364,7 +364,11 @@ def author_fixture():
 
 def main():
  author_fixture()
- subprocess.run(['node','scripts/convert-fixture.mjs'],cwd=ROOT,check=True,timeout=30)
+ if os.environ.get('CLIPCHAPTER_BROWSER')=='1':
+  subprocess.run(['node','test/browser/run.mjs'],cwd=ROOT,check=True,timeout=240)
+  subprocess.run(['node','scripts/prepare-negative.mjs'],cwd=ROOT,check=True,timeout=30)
+  REPORT['checks'].append('Actual sandboxed offline browser download supplied patched.mlt and receipt')
+ else:subprocess.run(['node','scripts/convert-fixture.mjs'],cwd=ROOT,check=True,timeout=30)
  subprocess.run(['/usr/bin/python3','scripts/verify-patch.py'],cwd=ROOT,check=True,timeout=30)
  REPORT['checks'].append('Independent literal frames and marker-only byte preservation passed')
  launch(ART/'patched.mlt');time.sleep(1);verify_markers('03-patched-native');save_as(ART/'roundtrip.mlt');key('ctrl+s');time.sleep(.5);close_app()

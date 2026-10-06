@@ -1,52 +1,81 @@
 # ClipChapter
 
-Native-first feasibility gate for putting source chapter points at the correct position of one selected Shotcut timeline clip occurrence.
+Offline source chapters → point markers for one selected Shotcut clip occurrence.
 
-**Status: core tests pass. Official GUI authoring/marker/playhead/save-reopen verification is pending. No product UI exists yet.**
+**Native feasibility passed in official Shotcut 26.9.27.** The new standalone
+browser interface is awaiting its fresh browser-download → native verification.
+Do not treat the earlier core prototype result as proof of the browser export.
 
-## Narrow contract
+## The bounded workflow
 
-Inputs are a saved Shotcut XML MLT project plus ffprobe chapter JSON, or an explicit `source_seconds,title` CSV with a zero-source-origin declaration. The user selects a specific normal-speed, flat clip occurrence, even when the same source appears more than once.
+1. Open `dist/clip-chapter.html` locally. No server, account or network is needed.
+2. Choose UTF-8 Shotcut MLT and ffprobe chapters JSON, or explicit CSV.
+3. Select the exact clip occurrence and confirm the chapter data belongs to its
+   source media. CSV also requires an explicit source-zero-origin confirmation.
+4. Review source/timeline frames, nearest-frame half-up quantization, trim
+   exclusions and preserved markers.
+5. Download a marker-only MLT copy, then its hash-bearing JSON receipt. Save the
+   copy beside the original MLT so relative media references continue to resolve.
 
-The mapping is:
+Japanese/English interface, keyboard controls, small-screen layout, printable
+review and a clean-start offline HTML download are included. Browser behavior is
+not accepted until the hosted browser/native gate passes.
 
-`timeline frame = occurrence start + source chapter position − selected clip in`
+The tool does not read, execute, transcode or edit media. It does not turn chapters
+into subtitles or range markers, and it does not infer which source file is
+correct from a filename alone.
 
-Only points within the source trim are eligible. Times are calculated as exact rational numbers and quantized to the nearest project frame, with half-up ties. A result that would quantize outside the selected clip is excluded. A receipt records included/excluded points and exact quantization deltas. Existing point markers with identical text/frame are not duplicated.
+## Scope and fail-closed rules
 
-The output is an adjacent-save MLT copy. Only the timeline's `shotcut:markers` property region is patched; every other source byte, existing marker, clip occurrence and media reference is preserved. No media is read or transcoded by the product core, and this is not a later-move-following or marker-lock feature.
+- One explicitly selected normal-speed, flat occurrence only
+- Inclusive source IN/OUT and preceding timeline entries/blanks
+- Point markers; preserve existing full marker keys/properties and all bytes
+  outside the ClipChapter marker patch
+- Retiming, reverse/conversion provenance, proxies, nesting, selected unsupported
+  transition overlap and nonzero source time origins are rejected
+- Recognizes ordinary native tractor title metadata, the playlist audiolevel
+  meter and known always-active/disabled compositors
+- UTF-8 XML only; no DTD/entities, external fetches or code execution
+- MLT8MiB, chapter4MiB, XML50,000 elements/depth96, chapters10,000,
+  one-line titles500 characters; output must remain within the same XML limits
 
-Unsupported selected clips include retime/reverse, nested/transition clips, proxy or alternate-resource/conversion metadata, nonzero source time origin, remote media and ambiguous timing. Only plain avformat/avformat-novalidate producers are eligible. A normal `shotcut:producer=avformat` label is allowed; it is not a speed flag. ffprobe format/stream zero-origin evidence is required, and a supplied media filename must match the selected resource's basename. Filename matching does not prove source-content identity.
+**Byte preservation applies to ClipChapter's exported patch.** Shotcut's own
+subsequent Save/Save As can normalize metadata. The native proof verifies that
+marker values, clip trims and media references survive that native save; it does
+not claim byte identity across Shotcut's save process.
 
-Limits: 8 MiB input/output MLT, 4 MiB chapter input, 10,000 chapter points, 50,000 XML elements, XML depth 96 and one billion frame positions. Output element limits are checked before returning a patched file. UTF-8 only; DTDs, namespaces, invalid XML characters and processing instructions are rejected. Alternate service attributes, attribute-valued or nested/mixed property forms, cropped playlist origins and timing changes on selected ancestry are unsupported. Marker names are bounded single-line text.
+## Input examples
 
-## Local core checks
+ffprobe JSON must include `chapters`, `format.start_time` and nonempty `streams`
+with zero `start_time` in every stream. Produce those fields with ffprobe's
+`-show_chapters -show_format -show_streams -of json` options. Chapter `start` and
+`time_base` are used as exact rational values.
+
+CSV requires the header `source_seconds,title`, decimal source seconds and an
+explicit confirmation that zero means the start of the referenced source video.
+
+## Verification
 
 ```sh
 npm ci --ignore-scripts
-npm test
+npm run verify
 ```
 
-This runs only the original JavaScript core tests. The native application is neither downloaded nor executed locally. The original synthetic fixture media generator uses the installed ffmpeg CLI; it never opens user media.
+The native-only accepted run is
+[37446224097](https://github.com/Masanori-Spec/clip-chapter/actions/runs/37446224097)
+at `13311f8e241e854adea889275276195bae739593`.
+It used the exact official archive, verified release metadata/size/SHA256, and
+hosted Xvfb GUI authoring. All five native rows and ten actual mouse-click
+Project/playhead seeks passed before/after native save and fresh-process reopen.
+The exact Chapter B one-frame shift to367 was rejected by both independent
+Python and the actual native GUI table. See `docs/native-feasibility.md`.
 
-## Mandatory hosted GUI gate
+The browser-native workflow authors a fresh official fixture, opens the offline
+HTML in sandboxed Chrome, downloads MLT through the actual UI, and routes those
+same bytes into the accepted native assertions. It must pass separately.
 
-The official pinned Shotcut 26.9.27 Linux txz is downloaded into the temporary GitHub Actions runner. Primary release metadata, exact filename, size and SHA-256 are checked before extraction/execution. No vendor binary enters this repository or its uploaded artifacts.
+## Notices
 
-The gate must:
-
-1. Use official Shotcut GUI controls to author and save two occurrences of an original 30fps, zero-origin synthetic source: first in/out 0–299, then 90–269, so the second starts at timeline frame 300
-2. Add and name an existing point marker `Baseline` at frame 30 through the GUI
-3. Apply the marker-only patch to that native-authored MLT, targeting the second occurrence
-4. Independently verify literal mappings 90→300, 156→366, 240→450 and 269→479; source 30 and 270 are excluded
-5. Compare every non-marker byte using independent Python Expat byte spans, and check preserved baseline/occurrences with ElementTree
-6. Open the patched MLT in official Shotcut and read the actual Markers QTreeView: five names, starts and ends
-7. Perform actual row mouse clicks, then require the Project tab and independent Current position control to show each expected frame
-8. Native-save to a fresh copy, close the process, reopen and repeat marker/seek checks
-9. Open a one-frame-shifted marker negative control and require the GUI row oracle to reject it
-
-A video render or exit code zero is never accepted as marker proof. This gate uses Xvfb, standard distro GUI-test tools and Shotcut's normal accessibility interface. It does not modify security settings or inject code into the application.
-
-## Research and licensing
-
-See [primary research and boundaries](docs/research.md). No original-code or fixture reuse license has been selected or granted. The XML parser is installed as a normal dependency under its existing license; vendor application source/binaries are not redistributed.
+Original ClipChapter code and synthetic fixtures have no reuse license grant.
+The bundled XML parser's legitimate third-party license is retained in
+`THIRD_PARTY_NOTICES.txt` and inside the offline tool.

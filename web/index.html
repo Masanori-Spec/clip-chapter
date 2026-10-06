@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <meta
+      name="description"
+      content="Offline chapter points for one selected Shotcut clip occurrence"
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <title>ClipChapter · Source to timeline</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#workspace" data-i18n="skip">作業エリアへ</a>
+    <header class="masthead">
+      <a class="brand" href="#top" aria-label="ClipChapter"
+        ><span class="brand-mark" aria-hidden="true">▥</span> ClipChapter<span
+          class="version"
+          >01</span
+        ></a
+      >
+      <nav aria-label="Language">
+        <button id="lang-ja" type="button" lang="ja" aria-pressed="true">
+          日本語</button
+        ><button id="lang-en" type="button" lang="en" aria-pressed="false">
+          EN
+        </button>
+      </nav>
+    </header>
+    <main id="top">
+      <section class="intro">
+        <div>
+          <p class="eyebrow">SOURCE → TIMELINE</p>
+          <h1 data-i18n="title">章の位置を、<br />このクリップへ。</h1>
+          <p class="lede" data-i18n="intro">
+            元動画のチャプターを、選んだ Shotcut
+            クリップのポイントマーカーへ。トリムと配置位置を確かめて、必要な点だけを移します。
+          </p>
+        </div>
+        <aside class="scope">
+          <span class="pill" data-i18n="offline">ローカル処理・オフライン</span>
+          <p data-i18n="scope">
+            通常速度のフラットなクリップ向け。MLT
+            とチャプターデータだけを読み、動画は読み込みません。
+          </p>
+          <span class="tested" data-i18n="tested"
+            >Shotcut 26.9.27 で実機検証</span
+          >
+        </aside>
+      </section>
+      <section id="workspace" tabindex="-1" aria-label="ClipChapter workspace">
+        <div class="toolbar">
+          <span class="section-label" data-i18n="workspace"
+            >CHAPTER WORKSPACE</span
+          >
+          <div>
+            <button id="sample" type="button" data-i18n="sample">
+              サンプルで試す</button
+            ><button id="reset" type="button" data-i18n="clear">クリア</button>
+          </div>
+        </div>
+        <div class="workspace-grid">
+          <section class="panel input-panel" aria-labelledby="input-title">
+            <h2 id="input-title">
+              <span class="step">01</span
+              ><span data-i18n="inputs">入力をそろえる</span>
+            </h2>
+            <label class="file-zone" for="mlt-input"
+              ><span class="file-tag">.MLT</span
+              ><strong data-i18n="projectLabel">Shotcut プロジェクト</strong
+              ><span id="mlt-summary" class="filename" data-i18n="notChosen"
+                >未選択</span
+              ><input
+                id="mlt-input"
+                type="file"
+                accept=".mlt,application/xml,text/xml"
+                aria-describedby="mlt-help"
+            /></label>
+            <p id="mlt-help" class="help" data-i18n="mltHelp">
+              UTF-8 XML・最大 8 MiB。元のプロジェクトは変更しません。
+            </p>
+            <label class="file-zone" for="chapters-input"
+              ><span class="file-tag">JSON / CSV</span
+              ><strong data-i18n="chapterLabel">元動画のチャプター</strong
+              ><span id="chapter-summary" class="filename" data-i18n="notChosen"
+                >未選択</span
+              ><input
+                id="chapters-input"
+                type="file"
+                accept=".json,.csv,application/json,text/csv"
+                aria-describedby="chapter-help"
+            /></label>
+            <p id="chapter-help" class="help" data-i18n="chapterHelp">
+              ffprobe の chapters・format・streams を含む JSON、または明示的な
+              CSV。最大 4 MiB。
+            </p>
+            <label class="field-label" for="format" data-i18n="formatLabel"
+              >チャプター形式</label
+            ><select id="format">
+              <option value="json">ffprobe JSON</option>
+              <option value="csv">CSV · source_seconds,title</option>
+            </select>
+            <label class="check-row" id="csv-origin-wrap" hidden
+              ><input type="checkbox" id="csv-origin" /><span
+                data-i18n="csvOrigin"
+                >CSV の時刻は元動画の開始 0 秒を基準にしています</span
+              ></label
+            >
+            <details class="format-guide">
+              <summary data-i18n="formatGuide">入力形式と制限</summary>
+              <p data-i18n="probeHelp">
+                ffprobe で -show_chapters -show_format -show_streams -of json
+                を指定して保存します。format と全 stream の start_time は 0
+                が必要です。
+              </p>
+              <p data-i18n="csvHelp">
+                CSV の先頭行は source_seconds,title。時刻は小数秒で、タイトルは
+                1 行・500 文字以内。最大 10,000 行です。
+              </p>
+              <p data-i18n="limitsHelp">
+                速度変更・逆再生・プロキシ・入れ子・選択範囲内の未対応トランジション・非ゼロのソース時刻原点はブロックします。XML
+                の外部実体やスクリプトは実行しません。
+              </p>
+            </details>
+          </section>
+          <section
+            class="panel selection-panel"
+            aria-labelledby="selection-title"
+          >
+            <h2 id="selection-title">
+              <span class="step">02</span
+              ><span data-i18n="choose">配置をひとつ選ぶ</span>
+            </h2>
+            <p class="help" data-i18n="occurrenceHelp">
+              同じ動画でも、タイムライン上の配置ごとに位置が変わります。
+            </p>
+            <label
+              class="field-label"
+              for="occurrence"
+              data-i18n="occurrenceLabel"
+              >対象のクリップ配置</label
+            ><select id="occurrence" disabled>
+              <option value="" data-i18n="choosePlaceholder">
+                配置を選択してください
+              </option>
+            </select>
+            <div id="clip-card" hidden>
+              <p class="resource" id="clip-resource"></p>
+              <div class="metrics">
+                <div>
+                  <span data-i18n="sourceIn">ソース IN</span
+                  ><strong id="source-in">—</strong>
+                </div>
+                <div>
+                  <span data-i18n="sourceOut">ソース OUT · 含む</span
+                  ><strong id="source-out">—</strong>
+                </div>
+                <div>
+                  <span data-i18n="timelineStart">配置の開始</span
+                  ><strong id="timeline-start">—</strong>
+                </div>
+              </div>
+              <p class="fps" id="fps"></p>
+              <div class="mapping-diagram" aria-hidden="true">
+                <span>SOURCE</span>
+                <div class="source-line"><i></i><b>IN</b><b>OUT</b></div>
+                <span>↓</span>
+                <div class="timeline-line"><b>START</b><i></i></div>
+                <span>TIMELINE</span>
+              </div>
+            </div>
+            <label class="check-row confirm"
+              ><input type="checkbox" id="identity" disabled /><span
+                data-i18n="identity"
+                >チャプターは、この配置が参照する元動画のものです</span
+              ></label
+            >
+            <p class="help" data-i18n="identityHelp">
+              ファイル名の一致は、動画の内容が同じことの証明にはなりません。
+            </p>
+            <div
+              id="status"
+              class="status"
+              role="status"
+              aria-live="polite"
+              data-i18n="initial"
+            >
+              2 つのファイルを選び、対象の配置を確認してください。
+            </div>
+          </section>
+        </div>
+        <section
+          id="results"
+          class="panel results"
+          hidden
+          aria-labelledby="review-title"
+        >
+          <div class="review-head">
+            <h2 id="review-title">
+              <span class="step">03</span
+              ><span data-i18n="review">移すポイントを確認</span>
+            </h2>
+            <span class="pill" id="review-fps"></span>
+          </div>
+          <div class="totals">
+            <div>
+              <strong id="included-count">0</strong
+              ><span data-i18n="added">追加する点</span>
+            </div>
+            <div>
+              <strong id="excluded-count">0</strong
+              ><span data-i18n="excluded">除外する章</span>
+            </div>
+            <div>
+              <strong id="existing-count">0</strong
+              ><span data-i18n="existing">保持するマーカー</span>
+            </div>
+          </div>
+          <p class="rounding" data-i18n="rounding">
+            タイムライン位置 = ソース位置 − IN +
+            配置の開始。最も近いフレームへ丸め、ちょうど半分は後のフレームへ。OUT
+            を超える点は除外します。
+          </p>
+          <div class="table-scroll">
+            <table id="point-table">
+              <caption data-i18n="tableCaption">
+                追加予定のポイントマーカー
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="name">名前</th>
+                  <th scope="col" data-i18n="sourceFrame">元のフレーム</th>
+                  <th scope="col" data-i18n="timelineFrame">
+                    配置先のフレーム
+                  </th>
+                  <th scope="col" data-i18n="quantization">丸め差 · frame</th>
+                </tr>
+              </thead>
+              <tbody id="point-rows"></tbody>
+            </table>
+          </div>
+          <details id="excluded-details">
+            <summary>
+              <span data-i18n="exclusions">除外と既存マーカー</span>
+            </summary>
+            <h3 data-i18n="excluded">除外する章</h3>
+            <ul id="excluded-list"></ul>
+            <h3 data-i18n="existing">保持するマーカー</h3>
+            <ul id="existing-list"></ul>
+          </details>
+          <div class="export-panel">
+            <div>
+              <strong data-i18n="exportTitle"
+                >マーカーだけを追加したコピー</strong
+              >
+              <p data-i18n="exportHelp">
+                元の MLT
+                と同じ場所に保存し、メディアの相対パスを維持してください。ClipChapter
+                の書き出しは、マーカー以外の全バイトを保持します。
+              </p>
+              <p class="help" data-i18n="nativeCaveat">
+                その後 Shotcut で保存すると、Shotcut
+                自身が一部のメタデータを正規化することがあります。
+              </p>
+            </div>
+            <div class="export-actions">
+              <button
+                class="primary"
+                id="export"
+                type="button"
+                disabled
+                data-i18n="export"
+              >
+                MLT のコピーを保存</button
+              ><button id="receipt" type="button" disabled data-i18n="receipt">
+                検証レシート JSON</button
+              ><button id="print" type="button" data-i18n="print">
+                この確認を印刷
+              </button>
+            </div>
+          </div>
+          <p id="export-status" class="help" role="status"></p>
+        </section>
+      </section>
+      <section class="notes">
+        <div>
+          <h2 data-i18n="pointOnly">章を、編集可能な点へ。</h2>
+          <p data-i18n="pointOnlyBody">
+            範囲マーカーや字幕は作りません。既存マーカーと他のクリップ配置はそのままに、選んだ配置へポイントを追加します。
+          </p>
+        </div>
+        <div>
+          <h3 data-i18n="receiptTitle">判断の記録も、一緒に。</h3>
+          <p data-i18n="receiptBody">
+            対象配置、元の時刻、丸め差、除外理由、入力と出力の SHA-256
+            をレシートに保存します。レシートは MLT
+            のダウンロード後に有効になります。
+          </p>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <span
+        >ClipChapter ·
+        <span data-i18n="footer">小さな編集補助、確かめられる出力。</span></span
+      ><button type="button" id="offline" data-i18n="saveOffline">
+        このツールをオフライン保存
+      </button>
+      <details>
+        <summary data-i18n="thirdParty">外部ライブラリ表記</summary>
+        <pre id="third-party"></pre>
+      </details>
+    </footer>
+    <script src="app.js"></script>
+  </body>
+</html>
