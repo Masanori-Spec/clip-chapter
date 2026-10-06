@@ -214,6 +214,15 @@ def show_markers():
   time.sleep(.2)
  if not MARKER_WINDOW:raise RuntimeError('Native Markers floating window not found')
  command('xdotool','windowsize',MARKER_WINDOW,'1000','620');command('xdotool','windowmove',MARKER_WINDOW,'100','30');command('xdotool','windowfocus',MARKER_WINDOW);time.sleep(.5)
+ # Prime Qt's real table focus event using the first rendered row. No expected
+ # marker label/frame is used here; full table and playhead assertions follow.
+ words,geometry=marker_ocr()
+ header=next((word for word in words if word['text']=='Name'and word['y']<geometry['y']+100),None)
+ next_header=next((word for word in words if word['text']=='Start'and word['y']<geometry['y']+100),None)
+ if not header or not next_header:raise RuntimeError('Native Name/Start headers are not visible for focus')
+ body=sorted([word for word in words if header['y']+header['h']+1<=word['y']<geometry['tableBottom'] and header['x']-5<=word['x']<next_header['x']-5],key=lambda word:(word['y'],word['x']))
+ if not body or body[0]['confidence']<25:raise RuntimeError('Native first marker row is not visibly readable for focus')
+ word=body[0];click_point(int(word['x']+2),int(word['y']+word['h']/2))
 
 def marker_ocr(normalize=True):
  global OCR_COUNT
@@ -236,11 +245,11 @@ def marker_ocr(normalize=True):
  # Locate the real tree's dark blank body at its empty right edge. This excludes
  # the toolbar and edit form without treating their icons as marker rows.
  runs=[];start=None
- for row_y in range(100,h-100):
+ for row_y in range(100,h-20):
   dark=max(crop.getpixel((w-20,row_y)))<=40
   if dark and start is None:start=row_y
   elif not dark and start is not None:runs.append((start,row_y));start=None
- if start is not None:runs.append((start,h-100))
+ if start is not None:runs.append((start,h-20))
  if not runs:raise RuntimeError('Native table body edge is not visible')
  blank_start,blank_end=max(runs,key=lambda run:run[1]-run[0])
  if blank_end-blank_start<100:raise RuntimeError('Native table needs a visibly empty region beneath all fixture rows')
