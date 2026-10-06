@@ -92,7 +92,7 @@ def launch(path=None):
    try:
     find(lambda n:n.getRoleName()in ['frame','window'],timeout=2);time.sleep(2)
     window=command('xdotool','search','--onlyvisible','--name','Shotcut').splitlines()[0]
-    command('xdotool','windowsize','--sync',window,'1536','1024');command('xdotool','windowmove','--sync',window,'0','0');time.sleep(.5);return
+    command('xdotool','windowsize','--sync',window,'1536','1024');command('xdotool','windowmove','--sync',window,'0','0');command('xdotool','windowfocus','--sync',window);time.sleep(.5);return
    except RuntimeError:pass
   time.sleep(.5)
  raise RuntimeError('Shotcut accessibility application did not become ready')
@@ -130,9 +130,24 @@ def current_position():
   except Exception:pass
  raise RuntimeError('Native Current position did not expose an integer frame value')
 
+def pause_player():
+ first,_=current_position();time.sleep(.3);second,_=current_position()
+ if second!=first:click_named('Play/Pause',['push button'])
+ first,_=current_position();time.sleep(.35);second,_=current_position()
+ assert first==second,f'Native player did not pause: {first} to {second}'
+
 def seek_source(frame):
- key('ctrl+t','ctrl+a');type_text(str(frame));key('Tab');time.sleep(.3)
- value,_=current_position();assert value==frame,f'Native seek expected {frame}, observed {value}'
+ pause_player()
+ control=find(lambda n:'Current position'in(n.description or '')or n.name=='Current position')
+ click(control);key('ctrl+a');type_text(str(frame));key('Return','Tab')
+ deadline=time.monotonic()+5
+ while time.monotonic()<deadline:
+  value,_=current_position()
+  if value==frame:
+   time.sleep(.3);stable,_=current_position()
+   if stable==frame:return
+  time.sleep(.15)
+ raise AssertionError(f'Native seek expected stable frame {frame}, observed {value}')
 
 def marker_table(timeout=10):
  node=find(lambda n:n.getRoleName()in ['tree table','table','tree']and n.queryTable().nColumns>=3 and any(n.queryTable().getColumnDescription(i)in ['Name','Start'] for i in range(n.queryTable().nColumns)),timeout=timeout)
@@ -160,7 +175,7 @@ def read_table():
  return node,table,columns,rows
 
 def verify_markers(label,click_all=True):
- show_markers()
+ show_markers();pause_player()
  node,table,columns,rows=read_table();expected=EXPECTED['markers']
  observed=[{k:row[k]for k in ['text','start','end']}for row in rows]
  if len(rows)!=len(expected)or sorted(observed,key=lambda r:r['text'])!=sorted(expected,key=lambda r:r['text']):raise MarkerMismatch(f'{label}: actual native marker rows mismatch: {observed}',observed)
