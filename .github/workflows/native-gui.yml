@@ -1,0 +1,39 @@
+name: Official Shotcut GUI feasibility
+on:
+  push:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  shotcut-gui:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install known test and virtual desktop dependencies
+        run: |
+          npm ci --ignore-scripts
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ffmpeg xvfb xauth dbus-x11 at-spi2-core python3-pyatspi python3-pil xdotool scrot libegl1 libopengl0 libxcb-cursor0 libxkbcommon-x11-0 libnss3 libasound2t64 libpulse0
+      - name: Core tests
+        run: npm test
+      - name: Generate only original synthetic media and probe chapters
+        run: python scripts/create-media.py
+      - name: Verify exact official Shotcut release metadata and archive
+        run: python scripts/fetch-shotcut.py
+      - name: Official GUI authoring, real marker rows, mouse-seek, save-reopen and shifted-marker fault
+        run: dbus-run-session -- xvfb-run --auto-servernum -s '-screen 0 1536x1024x24' /usr/bin/python3 scripts/gui-gate.py
+      - name: Upload evidence without vendor binaries
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: clip-chapter-native-gui
+          path: artifacts/native/
+          if-no-files-found: error
