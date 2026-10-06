@@ -13,7 +13,7 @@ APP=None
 class MarkerMismatch(AssertionError):
  def __init__(self,message,rows=None):super().__init__(message);self.rows=rows
 
-def command(*args):return subprocess.run(list(args),check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True).stdout
+def command(*args):return subprocess.run(list(args),check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,timeout=10).stdout
 
 def key(*keys):command('xdotool','key','--clearmodifiers',*keys);time.sleep(.25)
 
@@ -89,7 +89,10 @@ def launch(path=None):
   for child in desktop:
    if 'shotcut'in child.name.lower():APP=child;break
   if APP is not None:
-   try:find(lambda n:n.getRoleName()in ['frame','window'],timeout=2);time.sleep(2);return
+   try:
+    find(lambda n:n.getRoleName()in ['frame','window'],timeout=2);time.sleep(2)
+    window=command('xdotool','search','--onlyvisible','--name','Shotcut').splitlines()[0]
+    command('xdotool','windowsize','--sync',window,'1536','1024');command('xdotool','windowmove','--sync',window,'0','0');time.sleep(.5);return
    except RuntimeError:pass
   time.sleep(.5)
  raise RuntimeError('Shotcut accessibility application did not become ready')
@@ -111,7 +114,7 @@ def save_as(path):
  key('ctrl+shift+s');find(lambda n:n.getRoleName()in ['dialog','file chooser']and n.name=='Save XML',timeout=8);key('alt+n','ctrl+a');type_text(str(path));key('Return');wait_file(path);time.sleep(.5)
 
 def set_frames_format():
- click_named('Settings',['menu']);click_named('Time Format',['menu','menu item']);click_named('Frames',['check menu item','radio menu item','menu item']);time.sleep(.4)
+ click_named('Settings',['menu','menu item']);click_named('Time Format',['menu','menu item']);click_named('Frames',['check menu item','radio menu item','menu item']);time.sleep(.4)
 
 def current_position():
  # TimeSpinBox's native accessible description is the official Current position tooltip.

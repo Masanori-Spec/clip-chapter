@@ -25,4 +25,4 @@ Checked 2026-10-06. The difference is a bounded existing-clip-aware workflow, no
 
 Official consumer: [Shotcut v26.9.27 release](https://github.com/mltframework/shotcut/releases/tag/v26.9.27), exact `shotcut-linux-x86_64-26.9.27.txz`, 153,652,280 bytes, SHA-256 `849da6bbd24737f9edd07ba185b46982f2fb330981c05e1752809e85bcbb7e7b`. The fetcher matches that exact asset even if newer assets are present under the same release tag.
 
-Only original synthetic video is generated for testing. There is no user-media conversion, customer outreach, account creation, paid service or university-site access in this workflow.
+Only original synthetic video is generated for testing. The product does not convert or re-encode user media.
