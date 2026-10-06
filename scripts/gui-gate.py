@@ -226,7 +226,20 @@ def marker_ocr(normalize=True):
  for row in csv.DictReader(io.StringIO(result),delimiter='\t'):
   if row['level']!='5'or not row['text'].strip():continue
   words.append({'text':row['text'].strip(),'x':x+int(row['left'])/3,'y':y+int(row['top'])/3,'w':int(row['width'])/3,'h':int(row['height'])/3,'confidence':float(row['conf'])})
- return words,{'x':x,'y':y,'width':w,'height':h,'evidence':label}
+ # Locate the real tree's dark blank body at its empty right edge. This excludes
+ # the toolbar and edit form without treating their icons as marker rows.
+ runs=[];start=None
+ for row_y in range(100,h-100):
+  dark=max(crop.getpixel((w-20,row_y)))<=40
+  if dark and start is None:start=row_y
+  elif not dark and start is not None:runs.append((start,row_y));start=None
+ if start is not None:runs.append((start,h-100))
+ if not runs:raise RuntimeError('Native table body edge is not visible')
+ blank_start,blank_end=max(runs,key=lambda run:run[1]-run[0])
+ if blank_end-blank_start<100:raise RuntimeError('Native table needs a visibly empty region beneath all fixture rows')
+ geometry={'x':x,'y':y,'width':w,'height':h,'tableBottom':y+blank_end,'evidence':label}
+ (ART/f'{label}-geometry.json').write_text(json.dumps(geometry,indent=2)+'\n')
+ return words,geometry
 
 def read_table():
  # A Qt focus event can expose the otherwise omitted native table directly.
@@ -264,8 +277,8 @@ def read_table():
  if max(word['y']for word in headers.values())-min(word['y']for word in headers.values())>5:raise RuntimeError('Native table headers are not aligned')
  if not headers['Color']['x']<headers['Name']['x']<headers['Start']['x']<headers['End']['x']<headers['Duration']['x']:raise RuntimeError('Unexpected actual native marker column order')
  top=max(word['y']+word['h']for word in headers.values())+1
- # The native tree expands above the fixed bottom edit/toolbar region.
- bottom=geometry['y']+geometry['height']-150
+ # The bound is observed from the native table body, not the toolbar/form.
+ bottom=geometry['tableBottom']
  candidates=[word for word in words if top<=word['y']<bottom and headers['Name']['x']-5<=word['x']<headers['Duration']['x']-5]
  lines=[]
  for word in sorted(candidates,key=lambda word:(word['y']+word['h']/2,word['x'])):
