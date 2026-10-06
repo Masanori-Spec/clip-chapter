@@ -21,7 +21,7 @@ jobs:
         run: |
           npm ci --ignore-scripts
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends ffmpeg xvfb xauth dbus-x11 at-spi2-core python3-pyatspi python3-pil xdotool scrot libegl1 libopengl0 libxcb-cursor0 libxkbcommon-x11-0 libnss3 libasound2t64 libpulse0
+          sudo apt-get install -y --no-install-recommends ffmpeg xvfb xauth dbus-x11 at-spi2-core python3-pyatspi python3-pil xdotool scrot tesseract-ocr libegl1 libopengl0 libxcb-cursor0 libxkbcommon-x11-0 libnss3 libasound2t64 libpulse0
       - name: Core tests
         run: npm test
       - name: Generate only original synthetic media and probe chapters
