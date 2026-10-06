@@ -1,0 +1,18 @@
+{
+  "profile": { "num": 30, "den": 1 },
+  "occurrences": [
+    { "sourceIn": 0, "sourceOut": 299, "timelineStart": 0 },
+    { "sourceIn": 90, "sourceOut": 269, "timelineStart": 300 }
+  ],
+  "selected": { "sourceIn": 90, "sourceOut": 269, "timelineStart": 300 },
+  "existing": [{ "text": "Baseline", "start": 30, "end": 30 }],
+  "markers": [
+    { "text": "Baseline", "start": 30, "end": 30 },
+    { "text": "Chapter A", "start": 300, "end": 300 },
+    { "text": "Chapter B", "start": 366, "end": 366 },
+    { "text": "Chapter C", "start": 450, "end": 450 },
+    { "text": "Last included", "start": 479, "end": 479 }
+  ],
+  "excluded": ["Before trim", "After trim"],
+  "negative": { "text": "Chapter B", "wrongStart": 367, "expectedStart": 366 }
+}

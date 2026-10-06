@@ -1,0 +1,17 @@
+{
+  "name": "clip-chapter",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "description": "Native-first Shotcut source chapter to selected clip occurrence point-marker gate",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@xmldom/xmldom": "0.9.12"
+  }
+}
