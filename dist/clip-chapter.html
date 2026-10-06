@@ -891,6 +891,19 @@ pre {
 h1 {
   white-space: pre-line;
 }
+/* Long receipt hashes and native select contents must not expand narrow pages. */
+#export-status {
+  overflow-wrap: anywhere;
+}
+.panel,
+.workspace-grid > * {
+  min-width: 0;
+}
+nav button[aria-pressed="true"]:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: white;
+}
 </style>
   </head>
   <body>
@@ -8688,6 +8701,8 @@ ${o?.reason ?? ""}`,
       state.result = previous;
       renderResult();
     }
+    if (lastReceipt && !busy)
+      $("export-status").textContent = `${msg("\u30B3\u30D4\u30FC\u3092\u4FDD\u5B58\u3057\u307E\u3057\u305F", "Copy downloaded")} \xB7 ${lastReceipt.output.bytes.toLocaleString()} bytes \xB7 SHA-256 ${lastReceipt.output.sha256}`;
   }
   function download(bytes, type, name) {
     const url = URL.createObjectURL(new Blob([bytes], { type })), a = document.createElement("a");

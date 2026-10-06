@@ -876,3 +876,16 @@ pre {
 h1 {
   white-space: pre-line;
 }
+/* Long receipt hashes and native select contents must not expand narrow pages. */
+#export-status {
+  overflow-wrap: anywhere;
+}
+.panel,
+.workspace-grid > * {
+  min-width: 0;
+}
+nav button[aria-pressed="true"]:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: white;
+}

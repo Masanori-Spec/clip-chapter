@@ -438,6 +438,25 @@ try {
   expect(report.pageErrors).toEqual([]);
   expect(report.networkRequests).toEqual([]);
   report.status = "PASS";
+} catch (error) {
+  report.status = "FAIL";
+  report.reason = error.message;
+  report.stack = error.stack;
+  try {
+    report.layoutOverflows = await page.evaluate(() =>
+      [...document.querySelectorAll("body *")]
+        .map((node) => ({
+          tag: node.tagName,
+          id: node.id,
+          cls: node.className,
+          left: node.getBoundingClientRect().left,
+          right: node.getBoundingClientRect().right,
+        }))
+        .filter((rect) => rect.right > innerWidth + 1 || rect.left < -1),
+    );
+    await shot("99-failure.png");
+  } catch {}
+  throw error;
 } finally {
   await writeFile(
     resolve(art, "browser-report.json"),

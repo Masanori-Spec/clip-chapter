@@ -367,6 +367,9 @@ function languageTo(value) {
     state.result = previous;
     renderResult();
   }
+  if (lastReceipt && !busy)
+    $("export-status").textContent =
+      `${msg("コピーを保存しました", "Copy downloaded")} · ${lastReceipt.output.bytes.toLocaleString()} bytes · SHA-256 ${lastReceipt.output.sha256}`;
 }
 function download(bytes, type, name) {
   const url = URL.createObjectURL(new Blob([bytes], { type })),
