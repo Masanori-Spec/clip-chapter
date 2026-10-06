@@ -1,0 +1,180 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "name": "Self-contained HTML opens offline in Japanese with export blocked",
+      "passed": true
+    },
+    {
+      "name": "Keyboard skip link focuses workspace",
+      "passed": true
+    },
+    {
+      "name": "Keyboard MLT picker and real chapter file require explicit occurrence selection",
+      "passed": true
+    },
+    {
+      "name": "Explicit source identity enables literal four-marker review",
+      "passed": true
+    },
+    {
+      "name": "Actual keyboard download and receipt match independent literals and input/output hashes",
+      "passed": true,
+      "source": "actual sandboxed browser download",
+      "sha256": "2a7b106974b0e3726f488d84d4b1fd0a58566fcfe04f3ba74a7a43abadc6f4e7",
+      "bytes": 9894
+    },
+    {
+      "name": "Language switch preserves explicit selection and valid receipt",
+      "passed": true
+    },
+    {
+      "name": "Native horizontal review scroll reaches the complete rounding column: ja 390px",
+      "passed": true,
+      "view": 326,
+      "total": 530,
+      "position": 204,
+      "left": 32,
+      "right": 358,
+      "lastLeft": 267.703125,
+      "lastRight": 357.703125
+    },
+    {
+      "name": "Native horizontal review scroll reaches the complete rounding column: ja 320px",
+      "passed": true,
+      "view": 256,
+      "total": 530,
+      "position": 274,
+      "left": 32,
+      "right": 288,
+      "lastLeft": 197.703125,
+      "lastRight": 287.703125
+    },
+    {
+      "name": "Native horizontal review scroll reaches the complete rounding column: en 390px",
+      "passed": true,
+      "view": 326,
+      "total": 616,
+      "position": 290,
+      "left": 32,
+      "right": 358,
+      "lastLeft": 227.34375,
+      "lastRight": 358.1875
+    },
+    {
+      "name": "Native horizontal review scroll reaches the complete rounding column: en 320px",
+      "passed": true,
+      "view": 256,
+      "total": 616,
+      "position": 360,
+      "left": 32,
+      "right": 288,
+      "lastLeft": 157.34375,
+      "lastRight": 288.1875
+    },
+    {
+      "name": "JA/EN PDFs contain every point/exclusion; 390/320px layouts have no page overflow",
+      "passed": true
+    },
+    {
+      "name": "Dispatched empty file change preserves the valid review",
+      "passed": true
+    },
+    {
+      "name": "Other occurrence changes mapping and requires renewed source confirmation",
+      "passed": true
+    },
+    {
+      "name": "Unsupported native background occurrence blocks export",
+      "passed": true
+    },
+    {
+      "name": "retimed input fails closed",
+      "passed": true
+    },
+    {
+      "name": "proxy input fails closed",
+      "passed": true
+    },
+    {
+      "name": "DTD input fails closed",
+      "passed": true
+    },
+    {
+      "name": "malformed input fails closed",
+      "passed": true
+    },
+    {
+      "name": "Malformed ffprobe data invalidates stale output",
+      "passed": true
+    },
+    {
+      "name": "Nonzero ffprobe source origin is rejected",
+      "passed": true
+    },
+    {
+      "name": "Explicit filename mismatch blocks the selected occurrence",
+      "passed": true
+    },
+    {
+      "name": "Explicit CSV zero-origin confirmation, fractional rounding and trim exclusion",
+      "passed": true
+    },
+    {
+      "name": "Chapter labels render as inert text",
+      "passed": true
+    },
+    {
+      "name": "Oversized project rejected before parsing",
+      "passed": true
+    },
+    {
+      "name": "Late file read cannot overwrite a newer sample",
+      "passed": true
+    },
+    {
+      "name": "Clear cancels pending file reads",
+      "passed": true
+    },
+    {
+      "name": "New occurrence cancels a pending hash/export without stale download",
+      "passed": true
+    },
+    {
+      "name": "Repeated explicit export is byte deterministic",
+      "passed": true
+    },
+    {
+      "name": "Downloaded offline tool starts clean and still requires explicit occurrence",
+      "passed": true
+    }
+  ],
+  "pageErrors": [],
+  "networkRequests": [],
+  "screenshots": [
+    "01-ja-empty-desktop.png",
+    "02-ja-reviewed-desktop.png",
+    "03-en-reviewed-desktop.png",
+    "04-ja-mobile-390.png",
+    "04-ja-mobile-390-rounding-column.png",
+    "04-ja-mobile-320.png",
+    "04-ja-mobile-320-rounding-column.png",
+    "04-en-mobile-390.png",
+    "04-en-mobile-390-rounding-column.png",
+    "04-en-mobile-320.png",
+    "04-en-mobile-320-rounding-column.png",
+    "05-en-blocked.png"
+  ],
+  "browserVersion": "154.0.8037.57",
+  "chromiumSandboxRequested": true,
+  "sandboxCommandVerified": true,
+  "chromiumMainProcessCommands": [
+    "/opt/google/chrome/chrome --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --user-data-dir=/tmp/playwright_chromiumdev_profile-jysK7U --remote-debugging-pipe --no-startup-window --noerrdialogs --ozone-platform=headless --ozone-override-screen-size=800,600 --use-angle=swiftshader-webgl"
+  ],
+  "sandboxPolicy": "chromiumSandbox:true; no --no-sandbox or --disable-setuid-sandbox",
+  "nativeInput": {
+    "source": "actual sandboxed browser download",
+    "sha256": "2a7b106974b0e3726f488d84d4b1fd0a58566fcfe04f3ba74a7a43abadc6f4e7",
+    "bytes": 9894
+  }
+}

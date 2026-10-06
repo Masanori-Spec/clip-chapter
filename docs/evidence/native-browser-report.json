@@ -1,0 +1,216 @@
+{
+  "status": "PASS",
+  "consumer": "Official Shotcut 26.9.27 GUI",
+  "checks": [
+    "Official GUI authored and saved two occurrences plus baseline marker",
+    "Actual sandboxed offline browser download supplied patched.mlt and receipt",
+    "Independent literal frames and marker-only byte preservation passed",
+    "Native save and fresh-process reopen preserved marker table and mouse-seek frames"
+  ],
+  "markerViews": [
+    {
+      "label": "03-patched-native",
+      "rows": [
+        {
+          "text": "Baseline",
+          "start": 30,
+          "end": 30
+        },
+        {
+          "text": "Chapter A",
+          "start": 300,
+          "end": 300
+        },
+        {
+          "text": "Chapter B",
+          "start": 366,
+          "end": 366
+        },
+        {
+          "text": "Chapter C",
+          "start": 450,
+          "end": 450
+        },
+        {
+          "text": "Last included",
+          "start": 479,
+          "end": 479
+        }
+      ],
+      "actualMouseClickSeeks": [
+        {
+          "text": "Baseline",
+          "expectedFrame": 30,
+          "actualFrame": 30,
+          "nativePositionText": "30",
+          "projectTabSelected": true
+        },
+        {
+          "text": "Chapter A",
+          "expectedFrame": 300,
+          "actualFrame": 300,
+          "nativePositionText": "300",
+          "projectTabSelected": true
+        },
+        {
+          "text": "Chapter B",
+          "expectedFrame": 366,
+          "actualFrame": 366,
+          "nativePositionText": "366",
+          "projectTabSelected": true
+        },
+        {
+          "text": "Chapter C",
+          "expectedFrame": 450,
+          "actualFrame": 450,
+          "nativePositionText": "450",
+          "projectTabSelected": true
+        },
+        {
+          "text": "Last included",
+          "expectedFrame": 479,
+          "actualFrame": 479,
+          "nativePositionText": "479",
+          "projectTabSelected": true
+        }
+      ]
+    },
+    {
+      "label": "04-native-save-reopen",
+      "rows": [
+        {
+          "text": "Baseline",
+          "start": 30,
+          "end": 30
+        },
+        {
+          "text": "Chapter A",
+          "start": 300,
+          "end": 300
+        },
+        {
+          "text": "Chapter B",
+          "start": 366,
+          "end": 366
+        },
+        {
+          "text": "Chapter C",
+          "start": 450,
+          "end": 450
+        },
+        {
+          "text": "Last included",
+          "start": 479,
+          "end": 479
+        }
+      ],
+      "actualMouseClickSeeks": [
+        {
+          "text": "Baseline",
+          "expectedFrame": 30,
+          "actualFrame": 30,
+          "nativePositionText": "30",
+          "projectTabSelected": true
+        },
+        {
+          "text": "Chapter A",
+          "expectedFrame": 300,
+          "actualFrame": 300,
+          "nativePositionText": "300",
+          "projectTabSelected": true
+        },
+        {
+          "text": "Chapter B",
+          "expectedFrame": 366,
+          "actualFrame": 366,
+          "nativePositionText": "366",
+          "projectTabSelected": true
+        },
+        {
+          "text": "Chapter C",
+          "expectedFrame": 450,
+          "actualFrame": 450,
+          "nativePositionText": "450",
+          "projectTabSelected": true
+        },
+        {
+          "text": "Last included",
+          "expectedFrame": 479,
+          "actualFrame": 479,
+          "nativePositionText": "479",
+          "projectTabSelected": true
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    "01-startup.png",
+    "02-authored-fixture.png",
+    "03-patched-native.png",
+    "04-native-save-reopen.png",
+    "05-shifted-negative.png"
+  ],
+  "markerDockDiscovery": [
+    {
+      "restoredVisibleFloatingWindow": false
+    },
+    {
+      "restoredVisibleFloatingWindow": true
+    },
+    {
+      "restoredVisibleFloatingWindow": true
+    },
+    {
+      "restoredVisibleFloatingWindow": true
+    }
+  ],
+  "tableReadMethods": [
+    "Native AT-SPI table reached through real focus event",
+    "Native AT-SPI table reached through real focus event",
+    "Native AT-SPI table reached through real focus event",
+    "Native AT-SPI table reached through real focus event",
+    "Native AT-SPI table reached through real focus event",
+    "Native AT-SPI table reached through real focus event",
+    "Native AT-SPI table reached through real focus event",
+    "Native AT-SPI table reached through real focus event",
+    "Native AT-SPI table reached through real focus event",
+    "Native AT-SPI table reached through real focus event",
+    "Native AT-SPI table reached through real focus event",
+    "Native AT-SPI table reached through real focus event",
+    "Native AT-SPI table reached through real focus event",
+    "Native AT-SPI table reached through real focus event",
+    "Native AT-SPI table reached through real focus event"
+  ],
+  "negativeObservedRows": [
+    {
+      "text": "Baseline",
+      "start": 30,
+      "end": 30
+    },
+    {
+      "text": "Chapter A",
+      "start": 300,
+      "end": 300
+    },
+    {
+      "text": "Chapter B",
+      "start": 367,
+      "end": 367
+    },
+    {
+      "text": "Chapter C",
+      "start": 450,
+      "end": 450
+    },
+    {
+      "text": "Last included",
+      "start": 479,
+      "end": 479
+    }
+  ],
+  "negativeControl": {
+    "rejected": true,
+    "type": "actual GUI marker frame mismatch",
+    "reason": "05-shifted-negative: actual native marker rows mismatch: [{'text': 'Baseline', 'start': 30, 'end': 30}, {'text': 'Chapter A', 'start': 300, 'end': 300}, {'text': 'Chapter B', 'start': 367, 'end': 367}, {'text': 'Chapter C', 'start': 450, 'end': 450}, {'text': 'Last included', 'start': 479, 'end': 479}]"
+  }
+}

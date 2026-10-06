@@ -2,9 +2,9 @@
 
 Offline source chapters → point markers for one selected Shotcut clip occurrence.
 
-**Native feasibility passed in official Shotcut 26.9.27.** The new standalone
-browser interface is awaiting its fresh browser-download → native verification.
-Do not treat the earlier core prototype result as proof of the browser export.
+**Verified offline browser → official Shotcut 26.9.27 workflow.** The actual
+browser-downloaded MLT passed native marker-table, real mouse/playhead, save/reopen
+and exact shifted-marker negative checks. See [release evidence](docs/release.md).
 
 ## The bounded workflow
 
@@ -17,9 +17,9 @@ Do not treat the earlier core prototype result as proof of the browser export.
 5. Download a marker-only MLT copy, then its hash-bearing JSON receipt. Save the
    copy beside the original MLT so relative media references continue to resolve.
 
-Japanese/English interface, keyboard controls, small-screen layout, printable
-review and a clean-start offline HTML download are included. Browser behavior is
-not accepted until the hosted browser/native gate passes.
+Japanese/English interface, keyboard controls, 320/390px viewport layouts, printable
+review and clean-start offline HTML download are covered by 29 browser checks.
+The sample illustrates mapping and does not include a video file.
 
 The tool does not read, execute, transcode or edit media. It does not turn chapters
 into subtitles or range markers, and it does not infer which source file is
@@ -35,7 +35,7 @@ correct from a filename alone.
   transition overlap and nonzero source time origins are rejected
 - Recognizes ordinary native tractor title metadata, the playlist audiolevel
   meter and known always-active/disabled compositors
-- UTF-8 XML only; no DTD/entities, external fetches or code execution
+- UTF-8 XML only; no DTD or entity declarations, external fetches or code execution
 - MLT8MiB, chapter4MiB, XML50,000 elements/depth96, chapters10,000,
   one-line titles500 characters; output must remain within the same XML limits
 
@@ -70,9 +70,13 @@ Project/playhead seeks passed before/after native save and fresh-process reopen.
 The exact Chapter B one-frame shift to367 was rejected by both independent
 Python and the actual native GUI table. See `docs/native-feasibility.md`.
 
-The browser-native workflow authors a fresh official fixture, opens the offline
-HTML in sandboxed Chrome, downloads MLT through the actual UI, and routes those
-same bytes into the accepted native assertions. It must pass separately.
+The [accepted browser/native run37452696942](https://github.com/Masanori-Spec/clip-chapter/actions/runs/37452696942)
+authored a fresh official fixture, opened the offline HTML in sandboxed Chrome,
+downloaded MLT through the actual UI, and routed those same bytes into the native
+assertions. 38 core tests and 29 browser checks passed. The native-only feasibility
+checkpoint remains documented separately from this full browser result.
+
+![English desktop review](docs/evidence/desktop-en.png)
 
 ## Notices
 

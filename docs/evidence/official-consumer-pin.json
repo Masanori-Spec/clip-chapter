@@ -1,0 +1,15 @@
+{
+  "version": "26.9.27",
+  "releaseAPI": "https://api.github.com/repos/mltframework/shotcut/releases/tags/v26.9.27",
+  "releaseURL": "https://github.com/mltframework/shotcut/releases/tag/v26.9.27",
+  "asset": {
+    "name": "shotcut-linux-x86_64-26.9.27.txz",
+    "url": "https://github.com/mltframework/shotcut/releases/download/v26.9.27/shotcut-linux-x86_64-26.9.27.txz",
+    "size": 153652280,
+    "sha256": "849da6bbd24737f9edd07ba185b46982f2fb330981c05e1752809e85bcbb7e7b"
+  },
+  "metadataVerified": "2026-10-06",
+  "actualBytes": 153652280,
+  "actualSHA256": "849da6bbd24737f9edd07ba185b46982f2fb330981c05e1752809e85bcbb7e7b",
+  "metadataAndBytesVerifiedBeforeExecution": true
+}

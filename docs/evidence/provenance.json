@@ -1,0 +1,117 @@
+{
+  "testedCommit": "dab5ce89ad39e89a04fb6445eb23c531ae72df91",
+  "browserNativeRun": 37452696942,
+  "browserNativeRunUrl": "https://github.com/Masanori-Spec/clip-chapter/actions/runs/37452696942",
+  "browserNativeArtifact": {
+    "id": 11407651225,
+    "sha256": "1b594fa691c342f4bc2643e92b12daf40761e901869f5fa94c3d325ebacfb407"
+  },
+  "nativeOnlyRun": 37452696866,
+  "nativeOnlyRunUrl": "https://github.com/Masanori-Spec/clip-chapter/actions/runs/37452696866",
+  "nativeOnlyArtifact": {
+    "id": 11407561099,
+    "sha256": "7297ada7e4c48d558e4e8a843af143c31d9458f69b8fd5ce52527432338ae8df"
+  },
+  "offlineHTML": {
+    "sha256": "e2981d06f6b1721d07d93f76fe9953837d535ccc7118e5b19f883848bc2402ec",
+    "bytes": 325301
+  },
+  "evidenceFiles": [
+    {
+      "path": "browser-report.json",
+      "artifactMember": "artifacts/browser/browser-report.json",
+      "bytes": 6414,
+      "sha256": "cba83be0e20146fc7d28bc60cb2d9b70302c69c1f8d9d0bf0dafbca3e3b5f84e"
+    },
+    {
+      "path": "native-browser-report.json",
+      "artifactMember": "artifacts/native/gui-report.json",
+      "bytes": 5727,
+      "sha256": "b79e9f465283c022a72762eb4c3cea056c3997ea2db3ed6aec4a8f0963c75247"
+    },
+    {
+      "path": "independent-patch-report.json",
+      "artifactMember": "artifacts/native/independent-patch-report.json",
+      "bytes": 1152,
+      "sha256": "12f724764731d139c75aadd660bd522a713169fe0eddd4d48c31e3901627d8e5"
+    },
+    {
+      "path": "official-consumer-pin.json",
+      "artifactMember": "artifacts/native/official-consumer-pin.json",
+      "bytes": 685,
+      "sha256": "049aa680f724d15cce7cf27ea9b9a77d84419372525dcaef96c7b70641f539dc"
+    },
+    {
+      "path": "desktop-en.png",
+      "artifactMember": "artifacts/browser/03-en-reviewed-desktop.png",
+      "bytes": 257699,
+      "sha256": "481f07ddcb6284b417f965959b05ff52bf8bbefed95c18784b6f20a07a5e3602"
+    },
+    {
+      "path": "mobile-ja-390.png",
+      "artifactMember": "artifacts/browser/04-ja-mobile-390.png",
+      "bytes": 269566,
+      "sha256": "4bb6eba806f909596614fe9e662ea55c903fc64c1b6f4cb6f80789e58e46c4e4"
+    },
+    {
+      "path": "mobile-en-320.png",
+      "artifactMember": "artifacts/browser/04-en-mobile-320-rounding-column.png",
+      "bytes": 231404,
+      "sha256": "3fc47a5f192851cb3f389f748cc9d18ea6ffa5312edc32e6f4d05812d0f7413f"
+    },
+    {
+      "path": "native-reopened.png",
+      "artifactMember": "artifacts/native/04-native-save-reopen.png",
+      "bytes": 143764,
+      "sha256": "d5543eafa259686ee1c9ffe0fefa17cbd12bece5311d647e363870aa9fde6092"
+    },
+    {
+      "path": "review-ja.pdf",
+      "artifactMember": "artifacts/browser/review-ja.pdf",
+      "bytes": 231594,
+      "sha256": "df3bf23cf5444049ee3bd758c6a054d54ddcbfa9c5f84c7495cb86e519763732"
+    },
+    {
+      "path": "review-en.pdf",
+      "artifactMember": "artifacts/browser/review-en.pdf",
+      "bytes": 57461,
+      "sha256": "ce0c47b654af387b8f82f6629e670cc4740b5662075bf30e3147005ea8ee4551"
+    },
+    {
+      "path": "authored.mlt",
+      "artifactMember": "artifacts/native/authored.mlt",
+      "bytes": 8857,
+      "sha256": "9e3773fc37a6226bf72b496d636dfe2d7d688a65396336fcecb496609af05345"
+    },
+    {
+      "path": "browser-export.mlt",
+      "artifactMember": "artifacts/browser/browser-export.mlt",
+      "bytes": 9894,
+      "sha256": "2a7b106974b0e3726f488d84d4b1fd0a58566fcfe04f3ba74a7a43abadc6f4e7"
+    },
+    {
+      "path": "roundtrip.mlt",
+      "artifactMember": "artifacts/native/roundtrip.mlt",
+      "bytes": 9949,
+      "sha256": "38d0ea02a33864c71154c3d0d812496018aba5c3f76f223ba01d4092248f5ac6"
+    },
+    {
+      "path": "shifted.mlt",
+      "artifactMember": "artifacts/native/shifted.mlt",
+      "bytes": 9894,
+      "sha256": "cc275bebf41007474f9b610b2c22ab816794ea764d84bb645c36377373f6d8aa"
+    },
+    {
+      "path": "receipt.json",
+      "artifactMember": "artifacts/browser/browser-receipt.json",
+      "bytes": 3372,
+      "sha256": "54a8b36d82ac940da5109de694704d41dfa84b986b38da1afcb5a78472b9ab5b"
+    }
+  ],
+  "notes": [
+    "All copies below are byte-identical to downloaded, digest-verified CI artifact members.",
+    "Mobile evidence is Chromium viewport testing, not a claim of physical device or cross-browser testing.",
+    "Only ClipChapter patch non-marker bytes are preserved; Shotcut native save normalizes some metadata.",
+    "Evidence MLTs reference original synthetic source.mkv; media and vendor binaries are not included."
+  ]
+}

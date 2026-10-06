@@ -1,0 +1,129 @@
+{
+  "tool": "ClipChapter",
+  "version": "0.1.0",
+  "profile": {
+    "num": "30",
+    "den": "1"
+  },
+  "occurrence": {
+    "id": "1:1",
+    "trackIndex": 1,
+    "playlistId": "playlist0",
+    "producerId": "chain1",
+    "resource": "source.mkv",
+    "sourceIn": 90,
+    "sourceOut": 269,
+    "timelineStart": 300,
+    "duration": 180,
+    "supported": true,
+    "reason": null
+  },
+  "originEvidence": "ffprobe format and stream start_time",
+  "chapterSourceFilename": "/home/runner/work/clip-chapter/clip-chapter/artifacts/native/source.mkv",
+  "sourceIdentity": "Explicit occurrence selection; filename match when supplied, not a content fingerprint",
+  "included": [
+    {
+      "key": "1",
+      "index": 1,
+      "title": "Chapter A",
+      "sourceSeconds": "3/1",
+      "sourceFrame": "90/1",
+      "frame": 300,
+      "start": "00:00:10.000",
+      "end": "00:00:10.000",
+      "color": "#70B7DA",
+      "exactTimelineFrame": "300/1",
+      "quantizationFrames": "0/1"
+    },
+    {
+      "key": "2",
+      "index": 2,
+      "title": "Chapter B",
+      "sourceSeconds": "26/5",
+      "sourceFrame": "156/1",
+      "frame": 366,
+      "start": "00:00:12.200",
+      "end": "00:00:12.200",
+      "color": "#70B7DA",
+      "exactTimelineFrame": "366/1",
+      "quantizationFrames": "0/1"
+    },
+    {
+      "key": "3",
+      "index": 3,
+      "title": "Chapter C",
+      "sourceSeconds": "8/1",
+      "sourceFrame": "240/1",
+      "frame": 450,
+      "start": "00:00:15.000",
+      "end": "00:00:15.000",
+      "color": "#70B7DA",
+      "exactTimelineFrame": "450/1",
+      "quantizationFrames": "0/1"
+    },
+    {
+      "key": "4",
+      "index": 4,
+      "title": "Last included",
+      "sourceSeconds": "8966666667/1000000000",
+      "sourceFrame": "26900000001/100000000",
+      "frame": 479,
+      "start": "00:00:15.967",
+      "end": "00:00:15.967",
+      "color": "#70B7DA",
+      "exactTimelineFrame": "47900000001/100000000",
+      "quantizationFrames": "-1/100000000"
+    }
+  ],
+  "excluded": [
+    {
+      "index": 0,
+      "title": "Before trim",
+      "sourceSeconds": "1/1",
+      "sourceFrame": "30/1",
+      "reason": "outside selected source trim"
+    },
+    {
+      "index": 5,
+      "title": "After trim",
+      "sourceSeconds": "9/1",
+      "sourceFrame": "270/1",
+      "reason": "outside selected source trim"
+    }
+  ],
+  "existingMarkers": [
+    {
+      "key": "0",
+      "text": "Baseline",
+      "start": 30,
+      "end": 30,
+      "color": "#008000"
+    }
+  ],
+  "policy": "Point markers only; nearest-frame, half-up quantization; no clip/media edits",
+  "patch": {
+    "startUTF16": 7732,
+    "endUTF16": 7732,
+    "insertedCharacters": 1037,
+    "markerOnly": true
+  },
+  "input": {
+    "name": "authored.mlt",
+    "bytes": 8857,
+    "sha256": "9e3773fc37a6226bf72b496d636dfe2d7d688a65396336fcecb496609af05345"
+  },
+  "chapters": {
+    "name": "chapters.json",
+    "format": "json",
+    "bytes": 3907,
+    "sha256": "3dae20abb876a45525305271fe7393dd07b04c9e590cacc5f8a57e9166ba2213"
+  },
+  "output": {
+    "name": "authored.chapters.mlt",
+    "bytes": 9894,
+    "sha256": "2a7b106974b0e3726f488d84d4b1fd0a58566fcfe04f3ba74a7a43abadc6f4e7"
+  },
+  "confirmedSourceIdentity": true,
+  "csvZeroOriginConfirmed": false,
+  "nativeSaveCaveat": "Only the ClipChapter patch preserves non-marker bytes. Later Shotcut saves may normalize metadata."
+}

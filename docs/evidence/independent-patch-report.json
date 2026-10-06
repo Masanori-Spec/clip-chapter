@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "independentParser": "Python standard-library ElementTree and Expat byte indices",
+  "literalOccurrences": [
+    {
+      "sourceIn": 0,
+      "sourceOut": 299,
+      "timelineStart": 0
+    },
+    {
+      "sourceIn": 90,
+      "sourceOut": 269,
+      "timelineStart": 300
+    }
+  ],
+  "literalMarkers": [
+    {
+      "text": "Baseline",
+      "start": 30,
+      "end": 30
+    },
+    {
+      "text": "Chapter A",
+      "start": 300,
+      "end": 300
+    },
+    {
+      "text": "Chapter B",
+      "start": 366,
+      "end": 366
+    },
+    {
+      "text": "Chapter C",
+      "start": 450,
+      "end": 450
+    },
+    {
+      "text": "Last included",
+      "start": 479,
+      "end": 479
+    }
+  ],
+  "nonMarkerBytesUnchanged": true,
+  "existingMarkerKeysColorsPropertiesUnchanged": true,
+  "negativeIsExactIntendedShift": true,
+  "nonMarkerSHA256": "170444ca29f8c6e6a17d86986d97715c45d30a83313f57597cad4acc507b6335",
+  "originalMLTSHA256": "9e3773fc37a6226bf72b496d636dfe2d7d688a65396336fcecb496609af05345",
+  "patchedMLTSHA256": "2a7b106974b0e3726f488d84d4b1fd0a58566fcfe04f3ba74a7a43abadc6f4e7",
+  "shiftedMarkerRejected": true
+}
