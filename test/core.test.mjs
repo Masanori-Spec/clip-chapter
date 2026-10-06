@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import {
   inspectProject,
   parseFFprobe,
@@ -415,5 +416,85 @@ test("output byte cap counts escaped marker text", () => {
   assert.throws(
     () => addChapterMarkers(enc(fixture()), input, "0:1"),
     code("OUTPUT_LIMIT"),
+  );
+});
+
+// Exact official GUI save from run37442625256, without rewriting its XML.
+const nativeBytes = readFileSync(
+  new URL("./fixtures/shotcut-26.9.27-authored.mlt", import.meta.url),
+);
+test("official Shotcut26.9.27 authored project maps the second occurrence", () => {
+  const project = inspectProject(nativeBytes);
+  const media = project.occurrences.filter((o) => o.resource === "source.mkv");
+  assert.deepEqual(
+    media.map((o) => [o.sourceIn, o.sourceOut, o.timelineStart, o.supported]),
+    [
+      [0, 299, 0, true],
+      [90, 269, 300, true],
+    ],
+  );
+  const result = addChapterMarkers(nativeBytes, data(), media[1].id);
+  assert.deepEqual(
+    result.receipt.included.map((m) => m.frame),
+    [300, 366, 450, 479],
+  );
+  assert.equal(
+    stripMarkers(new TextDecoder().decode(result.output)),
+    stripMarkers(nativeBytes.toString()),
+  );
+});
+test("disabled native compositor metadata is accepted, active overlap is rejected", () => {
+  const enabled = nativeBytes
+    .toString()
+    .replace(
+      '<property name="disable">1</property>',
+      '<property name="disable">0</property>',
+    );
+  assert.throws(
+    () => addChapterMarkers(enc(enabled), data(), "1:1"),
+    code("UNSUPPORTED_CLIP"),
+  );
+});
+test("alternate transition service attributes cannot bypass the native allowlist", () => {
+  const changed = nativeBytes
+    .toString()
+    .replace(
+      '<transition id="transition0">',
+      '<transition id="transition0" mlt_service="timeremap">',
+    );
+  assert.throws(
+    () => inspectProject(enc(changed)),
+    code("UNSUPPORTED_SERVICE_FORM"),
+  );
+});
+test("unknown disabled transitions remain unsupported", () => {
+  const changed = nativeBytes
+    .toString()
+    .replace(
+      '<property name="mlt_service">qtblend</property>',
+      '<property name="mlt_service">unknown-timing-service</property>',
+    );
+  assert.throws(
+    () => addChapterMarkers(enc(changed), data(), "1:1"),
+    code("UNSUPPORTED_CLIP"),
+  );
+});
+test("native playlist audio meter is allowed but a timing filter is not", () => {
+  const changed = nativeBytes
+    .toString()
+    .replace(
+      '<property name="mlt_service">audiolevel</property>',
+      '<property name="mlt_service">timeremap</property>',
+    );
+  assert.throws(() => inspectProject(enc(changed)), code("UNSUPPORTED_TRACK"));
+  const warped = nativeBytes
+    .toString()
+    .replace(
+      '<property name="iec_scale">1</property>',
+      '<property name="iec_scale">1</property><property name="map">0=1</property>',
+    );
+  assert.throws(
+    () => addChapterMarkers(enc(warped), data(), "1:1"),
+    code("UNSUPPORTED_CLIP"),
   );
 });

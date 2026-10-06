@@ -46,7 +46,8 @@ const SERVICE_ATTRIBUTES = {
   chain: new Set(["id", "in", "out"]),
   producer: new Set(["id", "in", "out"]),
   playlist: new Set(["id", "in", "out"]),
-  tractor: new Set(["id", "in", "out", "shotcut"]),
+  tractor: new Set(["id", "in", "out", "shotcut", "title"]),
+  transition: new Set(["id", "in", "out"]),
   filter: new Set(["id", "in", "out"]),
   link: new Set(["id", "in", "out"]),
   entry: new Set(["producer", "in", "out"]),
@@ -397,6 +398,11 @@ export function inspectProject(bytes) {
     for (const item of elements(playlist)) {
       if (item.tagName === "property" || item.tagName === "properties")
         continue;
+      if (
+        item.tagName === "filter" &&
+        props(item).get("mlt_service") === "audiolevel"
+      )
+        continue;
       if (item.tagName === "blank") {
         validateServiceAttributes(item);
         position += frameTime(item.getAttribute("length"), fps);
@@ -475,7 +481,7 @@ export function inspectProject(bytes) {
           ["mix", "frei0r.cairoblend", "qtblend", "movit.overlay"].includes(
             svc,
           ) &&
-          tp.get("always_active") === "1"
+          (tp.get("always_active") === "1" || tp.get("disable") === "1")
         )
           continue;
         const tin = transition.hasAttribute("in")

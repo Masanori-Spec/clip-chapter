@@ -41,3 +41,19 @@ coordinates come from that actual native evidence. Real mouse clicks must still
 seek the separately read Project playhead to the literal frame oracle. A precise
 one-frame shifted negative and fresh-process save/reopen remain mandatory.
 Native compatibility is still pending until the complete hosted gate succeeds.
+
+## First official GUI-authored fixture
+
+Run https://github.com/Masanori-Spec/clip-chapter/actions/runs/37442625256
+at commit d4ac87f7545b82f67b5bfbc720d363b03b5077fd successfully authored
+and saved the exact two-occurrence project and Baseline marker at30. The retained
+MLT in test/fixtures/shotcut-26.9.27-authored.mlt is byte-identical to that save:
+SHA256 905dc502f8ad79e02422e99129d852b79d240df1abd4afc47a8cf5fc6df1c4d0.
+It is original synthetic fixture material with a relative source.mkv reference;
+no vendor binary or media is embedded in the source payload.
+
+The native save has tractor title metadata, a playlist audiolevel meter filter,
+and a disabled qtblend compositor. These narrow native forms are recognized;
+unknown/active overlapping transitions and timing filters remain blocked. This
+checkpoint proves authoring only. Imported marker playback, native save/reopen
+and the exact shifted negative still require the full hosted GUI gate.
