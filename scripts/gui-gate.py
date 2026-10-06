@@ -191,13 +191,20 @@ def show_markers():
  if MARKER_WINDOW:return
  try:MARKER_WINDOW=command('xdotool','search','--onlyvisible','--name','^Markers$').splitlines()[-1]
  except (subprocess.CalledProcessError,IndexError):pass
- try:panel=marker_panel()
- except RuntimeError:
-  key('ctrl+shift+6');panel=marker_panel()
- # Qt's scroll-area hierarchy omits the visible Markers children from AT-SPI.
- # Float and enlarge the actual dock, then read its rendered table independently.
- float_button=next((n for n in walk(panel)if n.name=='Float'and visible(n)),None)
- if not MARKER_WINDOW and float_button:click(float_button)
+ REPORT.setdefault('markerDockDiscovery',[]).append({'restoredVisibleFloatingWindow':bool(MARKER_WINDOW)})
+ if not MARKER_WINDOW:
+  try:panel=marker_panel()
+  except RuntimeError:
+   key('ctrl+shift+6')
+   try:MARKER_WINDOW=command('xdotool','search','--onlyvisible','--name','^Markers$').splitlines()[-1]
+   except (subprocess.CalledProcessError,IndexError):pass
+   if not MARKER_WINDOW:panel=marker_panel()
+  # Only a docked panel needs its Float control. A restored floating window
+  # already has native pixels and must not be toggled closed.
+  if not MARKER_WINDOW:
+   float_button=next((n for n in walk(panel)if n.name=='Float'and visible(n)),None)
+   if not float_button:raise RuntimeError('Docked native Markers Float control not found')
+   click(float_button)
  deadline=time.monotonic()+5
  while time.monotonic()<deadline:
   try:
