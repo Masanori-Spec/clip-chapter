@@ -26,3 +26,18 @@ Checked 2026-10-06. The difference is a bounded existing-clip-aware workflow, no
 Official consumer: [Shotcut v26.9.27 release](https://github.com/mltframework/shotcut/releases/tag/v26.9.27), exact `shotcut-linux-x86_64-26.9.27.txz`, 153,652,280 bytes, SHA-256 `849da6bbd24737f9edd07ba185b46982f2fb330981c05e1752809e85bcbb7e7b`. The fetcher matches that exact asset even if newer assets are present under the same release tag.
 
 Only original synthetic video is generated for testing. The product does not convert or re-encode user media.
+
+## Hosted native accessibility finding
+
+The official Linux GUI visibly created a 480-frame project and a point marker at
+frame 30, but its Markers QScrollArea omitted the rendered table from the ordinary
+AT-SPI child tree. This is consistent with Qt's scroll-area child exposure:
+https://github.com/qt/qtbase/blob/v6.8.3/src/widgets/accessible/complexwidgets.cpp#L505-L580
+
+The gate floats and enlarges the actual dock. It reads native table cells when a
+real focus event exposes that table; otherwise it OCRs the rendered table's
+headers and every name/start/end row, preserving the screenshots and TSV. Row
+coordinates come from that actual native evidence. Real mouse clicks must still
+seek the separately read Project playhead to the literal frame oracle. A precise
+one-frame shifted negative and fresh-process save/reopen remain mandatory.
+Native compatibility is still pending until the complete hosted gate succeeds.
