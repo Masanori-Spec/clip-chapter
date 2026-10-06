@@ -45,7 +45,16 @@ def find(predicate,timeout=12):
 def click(node):
  rect=node.queryComponent().getExtents(pyatspi.DESKTOP_COORDS)
  if rect.width<=0 or rect.height<=0 or rect.x<0 or rect.y<0:raise RuntimeError('Accessible control has no clickable visible rectangle')
- command('xdotool','mousemove','--sync',str(rect.x+max(1,rect.width//2)),str(rect.y+max(1,rect.height//2)))
+ x,y=rect.x+max(1,rect.width//2),rect.y+max(1,rect.height//2)
+ # Some packaged xdotool versions wait forever for motion at an unchanged point.
+ # Read actual pointer coordinates instead, with a bounded exact-position check.
+ command('xdotool','mousemove',str(x),str(y))
+ deadline=time.monotonic()+2
+ while time.monotonic()<deadline:
+  position=dict(line.split('=',1)for line in command('xdotool','getmouselocation','--shell').splitlines()if '='in line)
+  if position.get('X')==str(x)and position.get('Y')==str(y):break
+  time.sleep(.05)
+ else:raise RuntimeError(f'Pointer did not reach native control center {x},{y}')
  command('xdotool','click','1');time.sleep(.25)
 
 def click_named(name,roles=None):
