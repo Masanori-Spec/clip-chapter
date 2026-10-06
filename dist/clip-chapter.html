@@ -904,6 +904,11 @@ nav button[aria-pressed="true"]:hover {
   border-color: var(--ink);
   color: white;
 }
+/* Frame values stay legible as whole tokens; the table scrolls on small screens. */
+td:not(:first-child) {
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
 </style>
   </head>
   <body>
